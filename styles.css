@@ -153,6 +153,24 @@ button {
   opacity: 0.64;
 }
 
+.data-tools {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.data-tools button {
+  border-radius: 8px;
+  padding: 10px 11px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f7fbf8;
+}
+
+.data-tools button:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
 .workspace {
   min-width: 0;
   padding: 28px;

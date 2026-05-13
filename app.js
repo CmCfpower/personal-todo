@@ -32,6 +32,9 @@ const taskImportant = document.querySelector("#task-important");
 const taskDate = document.querySelector("#task-date");
 const tasksNode = document.querySelector("#tasks");
 const filters = document.querySelector("#filters");
+const exportButton = document.querySelector("#export-button");
+const importButton = document.querySelector("#import-button");
+const importFile = document.querySelector("#import-file");
 
 dateSearch.value = currentDate;
 taskDate.value = currentDate;
@@ -67,6 +70,10 @@ filters.addEventListener("click", (event) => {
   filter = button.dataset.filter;
   render();
 });
+
+exportButton.addEventListener("click", exportData);
+importButton.addEventListener("click", () => importFile.click());
+importFile.addEventListener("change", importData);
 
 tasksNode.addEventListener("change", (event) => {
   const card = event.target.closest("[data-task-id]");
@@ -165,6 +172,44 @@ function saveDays() {
 function saveAndRender() {
   saveDays();
   render();
+}
+
+function exportData() {
+  const payload = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    days
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `personal-todo-${toInputDate(new Date())}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+async function importData(event) {
+  const file = event.target.files[0];
+  event.target.value = "";
+  if (!file) return;
+
+  try {
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    const importedDays = parsed.days || parsed;
+    if (!importedDays || typeof importedDays !== "object" || Array.isArray(importedDays)) {
+      throw new Error("Invalid data");
+    }
+
+    days = normalizeDays(importedDays);
+    currentDate = getLatestDate(days);
+    dateSearch.value = currentDate;
+    taskDate.value = currentDate;
+    saveAndRender();
+  } catch {
+    alert("Не получилось импортировать файл. Нужен JSON, экспортированный из этого To-do.");
+  }
 }
 
 function openDate(date) {
