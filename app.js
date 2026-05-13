@@ -16,6 +16,7 @@ const seedDays = {
 };
 
 let days = normalizeDays(loadDays());
+importFromUrlHash();
 let currentDate = getLatestDate(days);
 let filter = "all";
 
@@ -210,6 +211,34 @@ async function importData(event) {
   } catch {
     alert("Не получилось импортировать файл. Нужен JSON, экспортированный из этого To-do.");
   }
+}
+
+function importFromUrlHash() {
+  const prefix = "#import=";
+  if (!window.location.hash.startsWith(prefix)) return;
+
+  try {
+    const encoded = window.location.hash.slice(prefix.length);
+    const json = decodeBase64Url(encoded);
+    const parsed = JSON.parse(json);
+    const importedDays = parsed.days || parsed;
+    if (!importedDays || typeof importedDays !== "object" || Array.isArray(importedDays)) {
+      throw new Error("Invalid data");
+    }
+
+    days = normalizeDays(importedDays);
+    saveDays();
+    window.history.replaceState(null, "", window.location.pathname);
+  } catch {
+    alert("Не получилось импортировать задачи из ссылки.");
+  }
+}
+
+function decodeBase64Url(value) {
+  const base64 = value.replaceAll("-", "+").replaceAll("_", "/");
+  const padded = base64.padEnd(Math.ceil(base64.length / 4) * 4, "=");
+  const bytes = Uint8Array.from(atob(padded), (char) => char.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
 }
 
 function openDate(date) {
