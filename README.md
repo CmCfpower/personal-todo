@@ -31,4 +31,18 @@ node server.js
 - `styles.css` — внешний вид.
 - `app.js` — логика и сохранение.
 - `server.js` — простой локальный сервер для запуска через `localhost`.
+- `.nojekyll` — отключает обработку Jekyll на GitHub Pages.
+
 Markdown-архивы вида `todo-YYYY-MM-DD.md` хранятся только локально и не публикуются в GitHub.
+
+## GitHub Pages
+
+В настройках репозитория открой `Settings` -> `Pages`.
+
+Выбери:
+
+- Source: `Deploy from a branch`
+- Branch: `main`
+- Folder: `/ (root)`
+
+После сохранения сайт будет доступен по адресу `https://cmcfpower.github.io/personal-todo/`.
