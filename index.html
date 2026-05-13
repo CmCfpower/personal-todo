@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-do</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Списки по датам">
+        <div class="brand">
+          <div>
+            <h1>To-do</h1>
+            <p>Ежедневные списки</p>
+          </div>
+          <button class="icon-button" id="new-day-button" type="button" title="Создать день" aria-label="Создать день">+</button>
+        </div>
+
+        <label class="field-label" for="date-search">Открыть дату</label>
+        <div class="date-jump">
+          <input id="date-search" type="date" />
+          <button id="open-date-button" type="button">Открыть</button>
+        </div>
+
+        <div class="sidebar-head">
+          <span>Дни</span>
+          <span id="day-count">0</span>
+        </div>
+        <nav class="day-list" id="day-list" aria-label="Сохраненные дни"></nav>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Выбранный список</p>
+            <h2 id="current-title">13 мая 2026</h2>
+          </div>
+          <div class="summary" id="summary"></div>
+        </header>
+
+        <section class="controls" aria-label="Управление задачами">
+          <form class="task-form" id="task-form">
+            <input id="task-title" type="text" placeholder="Новая задача" autocomplete="off" />
+            <input id="task-date" type="date" aria-label="Дата задачи" />
+            <label class="important-toggle">
+              <input id="task-important" type="checkbox" />
+              <span>Важное</span>
+            </label>
+            <button type="submit">Добавить</button>
+          </form>
+
+          <div class="filters" id="filters" role="group" aria-label="Фильтр задач">
+            <button class="active" type="button" data-filter="all">Все</button>
+            <button type="button" data-filter="open">Открытые</button>
+            <button type="button" data-filter="important">Важные</button>
+            <button type="button" data-filter="done">Готовые</button>
+          </div>
+        </section>
+
+        <section class="tasks" id="tasks" aria-label="Задачи"></section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
